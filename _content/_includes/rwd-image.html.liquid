@@ -1,0 +1,6 @@
+
+  {% capture img_code %}<img src="{{ include.path }}" loading="lazy" alt="{{ include.alt | escape }}">{% endcapture %}
+  {% if include.caption %}
+    {% capture img_code %}{{ img_code }}<figcaption>{{ include.caption | markdownify }}</figcaption>{% endcapture %}
+    {% capture img_code %}<figure>{{ img_code }}</figure>{% endcapture %}
+  {% endif %}
