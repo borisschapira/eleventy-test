@@ -1,33 +1,116 @@
 {
-  "name": "eleventy-base-blog",
-  "version": "5.0.0",
-  "description": "A starter repository for a blog web site using the Eleventy static site generator.",
+  "name": "boris.schapira.dev-eleventy",
+  "version": "1.0.0",
+  "description": "My Eleventy setup",
   "scripts": {
-    "build": "npx eleventy",
-    "watch": "npx eleventy --watch",
-    "debug": "DEBUG=* npx eleventy"
+    "vendors:abbr-touch": "cp ./node_modules/abbr-touch/abbr-touch.js ./_src/scripts/vendors/",
+    "vendors:ets": "cp ./node_modules/easy-toggle-state/dist/easy-toggle-state.es6.min.js ./_src/scripts/vendors/",
+    "vendors:include-media": "cp ./node_modules/include-media/dist/_include-media.scss ./_src/styles/scss/vendors/",
+    "vendors:instantsearch": "cp ./node_modules/instantsearch.js/dist/instantsearch.min.js ./_src/scripts/vendors/; cp ./node_modules/instantsearch.js/dist/instantsearch.min.css ./assets/styles/vendors/; cp ./node_modules/instantsearch.js/dist/instantsearch-theme-algolia.min.css ./assets/styles/vendors/",
+    "vendors:jquery": "cp ./node_modules/jquery/dist/jquery.min.js ./_src/scripts/vendors/",
+    "vendors:normalize": "cp -R ./node_modules/normalize-scss/sass/ ./_src/styles/scss/vendors/normalize",
+    "vendors:touchtap-event": "cp ./node_modules/touchtap-event/touchtap-event.js ./_src/scripts/vendors/",
+    "vendors": "npm run vendors:abbr-touch & npm run vendors:ets & npm run vendors:include-media & npm run vendors:instantsearch & npm run vendors:jquery & npm run vendors:normalize & npm run vendors:touchtap-event",
+    "uglify:search": "uglifyjs _src/scripts/search.js -o assets/scripts/search.min.js",
+    "uglify:comments": "uglifyjs _src/scripts/comments.js -o assets/scripts/comments.min.js",
+    "uglify:index": "uglifyjs _src/scripts/index.js -o assets/scripts/index.min.js",
+    "uglify:twitter-wjs": "uglifyjs _src/scripts/twitter-wjs.js -o assets/scripts/vendors/twitter-wjs.min.js",
+    "uglify": "npm run uglify:comments & npm run uglify:index & npm run uglify:search & npm run uglify:twitter-wjs",
+    "eslint:search": "eslint _src/scripts/custom/search.js",
+    "eslint:comments": "eslint _src/scripts/custom/jquery_comments.js",
+    "eslint:index": "eslint _src/scripts/custom/index.js",
+    "eslint": "npm run eslint:comments & npm run eslint:index & npm run eslint:search",
+    "concat:search": "concat -o _src/scripts/search.js _src/scripts/vendors/instantsearch.min.js _src/scripts/custom/search.js",
+    "concat:comments": "concat -o _src/scripts/comments.js _src/scripts/vendors/jquery.min.js _src/scripts/custom/jquery_comments.js",
+    "concat:index": "concat -o _src/scripts/index.js _src/scripts/vendors/easy-toggle-state.es6.min.js _src/scripts/vendors/touchtap-event.js _src/scripts/vendors/abbr-touch.js _src/scripts/custom/index.js",
+    "concat": "npm run concat:comments & npm run concat:search & npm run concat:index",
+    "postcss": "postcss $npm_package_config_css_dir --dir $npm_package_config_dist_dir",
+    "sass": "node-sass $npm_package_config_scss_dir -o $npm_package_config_css_dir",
+    "pretty:css": "prettier --write '_src/styles/scss/**/*.scss'",
+    "pretty:js": "prettier --single-quote es5 --write '_src/scripts/custom/**/*.js'",
+    "pretty": "npm run pretty:js && npm run pretty:css",
+    "pretty:md": "prettier --tab-width 4 --single-quote --prose-wrap always --write '{,!(node_modules)/**/*.md}'",
+    "pretty:md:2019": "prettier --tab-width 4 --single-quote --prose-wrap always --write '{,!(node_modules)/**/2019/*.md}'",
+    "pretty:md:bookmark": "prettier --tab-width 4 --single-quote --prose-wrap always --write '_bookmarks/**/*.md'",
+    "build:js": "npm run eslint && npm run concat && npm run uglify",
+    "build:css": "npm run sass && npm run postcss",
+    "build": "npm run vendors && npm run pretty && npm run build:css && npm run build:js",
+    "lambda:serve": "netlify-lambda serve functions",
+    "lambda:build": "netlify-lambda build functions",
+    "comments:get": "node ./scripts/get-comments.js",
+    "bookmarks:get": "node ./scripts/get-bookmarks.js && npm run pretty:md:bookmark",
+    "test": "mocha --timeout 15000 _tests/index.js",
+    "watch": "npm-scripts-watcher"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/11ty/eleventy-base-blog.git"
+  "watch": {
+    "_src/styles/scss/**/*.scss": [
+      "pretty:css",
+      "build:css"
+    ],
+    "_src/scripts/custom/**/*.js": [
+      "pretty:js",
+      "build:js"
+    ],
+    "_posts/**/2019/*.md": [
+      "pretty:md:2019"
+    ]
   },
-  "author": {
-    "name": "Zach Leatherman",
-    "email": "zachleatherman@gmail.com",
-    "url": "https://zachleat.com/"
+  "config": {
+    "css_dir": "_src/styles/css/",
+    "scss_dir": "_src/styles/scss/",
+    "dist_dir": "assets/styles/"
   },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/11ty/eleventy-base-blog/issues"
-  },
-  "homepage": "https://github.com/11ty/eleventy-base-blog#readme",
   "devDependencies": {
     "@11ty/eleventy": "^0.8.3",
     "@11ty/eleventy-plugin-rss": "^1.0.6",
     "@11ty/eleventy-plugin-syntaxhighlight": "^2.0.1",
+    "@fullhuman/postcss-purgecss": "^1.1.0",
+    "autoprefixer": "^9.2.1",
+    "chai": "^4.2.0",
+    "concat-cli": "^4.0.0",
+    "csswring": "^7.0.0",
+    "dotenv": "^6.1.0",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-config-google": "^0.13.0",
+    "eslint-plugin-import": "^2.17.3",
+    "first-input-delay": "^0.1.3",
     "html-minifier": "^4.0.0",
+    "include-media": "^1.4.9",
+    "install": "^0.12.2",
     "luxon": "^1.12.0",
     "markdown-it": "^8.4.2",
-    "markdown-it-anchor": "^5.0.2"
+    "markdown-it-anchor": "^5.0.2",
+    "mocha": "^6.1.4",
+    "netlify-lambda": "^1.4.13",
+    "node-sass": "^4.9.4",
+    "normalize-scss": "^7.0.1",
+    "npm": "^6.5.0",
+    "npm-scripts-watcher": "^1.0.2",
+    "pixelmatch": "^4.0.2",
+    "pngjs": "^3.4.0",
+    "postcss": "^7.0.5",
+    "postcss-cli": "^6.0.0",
+    "postcss-purgecss": "^1.0.0",
+    "prettier": "^1.16.1",
+    "puppeteer": "^1.17.0",
+    "purify-css": "^1.2.5",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5",
+    "rmfr": "^2.0.0",
+    "rss-parser": "^3.7.1",
+    "uglify-es": "github:mishoo/UglifyJS2#harmony",
+    "var": "^0.3.2"
+  },
+  "dependencies": {
+    "abbr-touch": "^2.1.6",
+    "acorn": "^6.1.1",
+    "easy-toggle-state": "^1.10.0",
+    "instantsearch.js": "^2.7.2",
+    "jquery": "^3.4",
+    "js-md5": "^0.7.3",
+    "js-yaml": "^3.12.0",
+    "mkdirp": "^0.5.1",
+    "touchtap-event": "^2.0.2"
   }
 }
