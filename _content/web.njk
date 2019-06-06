@@ -1,0 +1,18 @@
+---
+
+pagination:
+  data: collections.fr_web
+  size: 20
+  reverse: true
+  alias: posts
+layout: home.njk
+permalink: /web/{% if pagination.pageNumber > 0 %}{{ pagination.pageNumber }}/{% endif %}
+---
+
+<h1>Web Archive</h1>
+
+<ol>
+{% for post in posts %}
+  <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+{% endfor %}
+</ol>

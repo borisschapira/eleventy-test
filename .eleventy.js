@@ -18,6 +18,16 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addCollection("tagList", require("./_11ty/getTagList"));
 
+  ["en","fr"].forEach((l) => {
+    ["web","citoyen","papa"].forEach((c) => {
+      eleventyConfig.addCollection(`${l}_${c}`, function(collection) {
+        return collection.getAll().filter(function(item) {
+          return item.data.category == c && item.data.locale == l;
+        });
+      });
+    })
+  })
+
   /********************************
    * Filters                      *
    ********************************/
