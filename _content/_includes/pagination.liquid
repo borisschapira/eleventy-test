@@ -1,0 +1,26 @@
+<div class="pagination">
+  {% if pagination.nextPageHref %}
+  <a
+    class="pagination-item older"
+    href="{{ pagination.nextPageHref | url }}"
+    >Older</a
+  >
+  {% else %}
+  <span class="pagination-item older">Older</span>
+  {% endif %} {% if pagination.previousPageHref %} {% if
+  pagination.page == 1 %}
+  <a
+    class="pagination-item newer"
+    href="{{ pagination.firstPageHref | url }}/"
+    >Newer</a
+  >
+  {% else %}
+  <a
+    class="pagination-item newer"
+    href="{{ pagination.previousPageHref | url }}"
+    >Newer</a
+  >
+  {% endif %} {% else %}
+  <span class="pagination-item newer">Newer</span>
+  {% endif %}
+</div>

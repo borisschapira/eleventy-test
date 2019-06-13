@@ -1,0 +1,20 @@
+---
+pagination:
+  size: 20
+  reverse: true
+  alias: posts
+layout: home.njk
+permalink: /{% if filterPrefix %}{{ filterPrefix }}/{% endif %}{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber }}/{% endif %}
+---
+
+
+
+<h1>{{ content }}</h1>
+
+<ol start="{{ pagination.pageNumber | times: pagination.size | plus: 1 }}">
+{%- for post in posts -%}
+  <li><a href="{{ post.url | url }}">{{ post.data.title }}</a></li>
+{%- endfor -%}
+</ol>
+
+{% include pagination.liquid %}
