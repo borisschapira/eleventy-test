@@ -1,13 +1,10 @@
 ---
+layout: home.njk
 pagination:
   size: 20
   reverse: true
   alias: posts
-layout: home.njk
-permalink: /{% if filterPrefix %}{{ filterPrefix }}/{% endif %}{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber }}/{% endif %}
 ---
-
-
 
 <h1>{{ content }}</h1>
 

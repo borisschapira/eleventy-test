@@ -2,11 +2,10 @@
 navtitle: EN
 pagination:
   data: collections.posts_en
-filterPrefix: en
 tags:
   - nav_fr
-  - nav_en
 layout: index.liquid
+permalink: /en/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber }}/{% endif %}
 ---
 
 Posts
