@@ -1,5 +1,5 @@
 ---
-layout: post.md
+layout: post.liquid
 title: About Me
 tags:
   - nav

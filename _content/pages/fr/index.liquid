@@ -1,11 +1,14 @@
 ---
 navtitle: FR
-pagination:
-  data: collections.posts_fr
+layout: index.liquid
 tags:
   - nav_en
-layout: index.liquid
-permalink: /{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber }}/{% endif %}
+pagination:
+  data: collections.posts_fr
+  size: 20
+  reverse: true
+  alias: posts
+permalink: /{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber|plus:1 }}/{% endif %}
 ---
 
 Articles

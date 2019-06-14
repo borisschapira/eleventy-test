@@ -1,0 +1,12 @@
+---
+navtitle: Citoyen
+layout: index.liquid
+pagination:
+  data: collections.posts_fr_citoyen
+  size: 20
+  reverse: true
+  alias: posts
+permalink: /citoyen/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber|plus:1 }}/{% endif %}
+---
+
+Citoyen

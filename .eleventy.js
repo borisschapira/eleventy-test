@@ -12,17 +12,36 @@ module.exports = function(eleventyConfig) {
   });
   eleventyConfig.setDataDeepMerge(true);
 
-  /********************************
-   * Custom collections           *
-   ********************************/
+  /***********************************************
+   * Custom collections with previous/next post  *
+   ***********************************************/
 
   eleventyConfig.addCollection("tagList", require("./_11ty/getTagList"));
 
-  arrLocales = ["en", "fr"];
-  arrCategories = ["web", "citoyen", "papa"];
+  const arrLocales = ["en", "fr"];
+  const arrCategories = ["web", "citoyen", "papa"];
+
+  function addPrevNext(collectionArray) {
+    const l = collectionArray.length;
+    for (let p = 0; p < collectionArray.length; p++) {
+      if (p > 1) {
+        collectionArray[p].data.previous = {
+          title: collectionArray[p - 1].data.title,
+          url: collectionArray[p - 1].url
+        };
+      }
+      if (p < l - 1) {
+        collectionArray[p].data.next = {
+          title: collectionArray[p + 1].data.title,
+          url: collectionArray[p + 1].url
+        };
+      }
+    }
+    return collectionArray;
+  }
 
   for (let i = 0; i < arrLocales.length; i++) {
-    let l = arrLocales[i];
+    const l = arrLocales[i];
     eleventyConfig.addCollection(`posts_${l}`, collection =>
       collection.getFilteredByTag("posts").filter(function(item) {
         return item.data.locale == l;
@@ -30,11 +49,13 @@ module.exports = function(eleventyConfig) {
     );
 
     for (let j = 0; j < arrCategories.length; j++) {
-      let c = arrCategories[j];
+      const c = arrCategories[j];
       eleventyConfig.addCollection(`posts_${l}_${c}`, collection =>
-        collection.getFilteredByTag("posts").filter(function(item) {
-          return item.data.category == c && item.data.locale == l;
-        })
+        addPrevNext(
+          collection.getFilteredByTag("posts").filter(function(item) {
+            return item.data.category == c && item.data.locale == l;
+          })
+        )
       );
     }
   }
@@ -43,18 +64,14 @@ module.exports = function(eleventyConfig) {
    * Filters                      *
    ********************************/
 
-  eleventyConfig.addFilter("readableDate", dateObj => {
-    return DateTime.fromJSDate(dateObj, { zone: "utc+1" }).toFormat(
-      "dd LLL yyyy"
-    );
-  });
+  eleventyConfig.addFilter("readableDate", dateObj =>
+    DateTime.fromJSDate(dateObj, { zone: "utc+1" }).toFormat("dd LLL yyyy")
+  );
 
   // https://html.spec.whatwg.org/multipage/common-microsyntaxes.html#valid-date-string
-  eleventyConfig.addFilter("htmlDateString", dateObj => {
-    return DateTime.fromJSDate(dateObj, { zone: "utc+1" }).toFormat(
-      "yyyy-LL-dd"
-    );
-  });
+  eleventyConfig.addFilter("htmlDateString", dateObj =>
+    DateTime.fromJSDate(dateObj, { zone: "utc+1" }).toFormat("yyyy-LL-dd")
+  );
 
   // Get the first `n` elements of a collection.
   eleventyConfig.addFilter("head", (array, n) => {
@@ -74,14 +91,14 @@ module.exports = function(eleventyConfig) {
    * Markdown plugins             *
    ********************************/
 
-  let markdownIt = require("markdown-it");
-  let markdownItAnchor = require("markdown-it-anchor");
-  let options = {
+  const markdownIt = require("markdown-it");
+  const markdownItAnchor = require("markdown-it-anchor");
+  const options = {
     html: true,
     breaks: true,
     linkify: true
   };
-  let opts = {
+  const opts = {
     permalink: true,
     permalinkClass: "direct-link",
     permalinkSymbol: "#"
@@ -98,7 +115,7 @@ module.exports = function(eleventyConfig) {
 
   eleventyConfig.addTransform("htmlmin", function(content, outputPath) {
     if (outputPath.endsWith(".html")) {
-      let minified = htmlmin.minify(content, {
+      const minified = htmlmin.minify(content, {
         useShortDoctype: true,
         removeComments: true,
         collapseWhitespace: true

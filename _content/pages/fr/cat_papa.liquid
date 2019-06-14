@@ -1,0 +1,12 @@
+---
+navtitle: Papa
+layout: index.liquid
+pagination:
+  data: collections.posts_fr_papa
+  size: 20
+  reverse: true
+  alias: posts
+permalink: /papa/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber|plus:1 }}/{% endif %}
+---
+
+Papa

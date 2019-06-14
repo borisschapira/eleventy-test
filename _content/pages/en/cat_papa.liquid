@@ -1,0 +1,12 @@
+---
+navtitle: Dad
+layout: index.liquid
+pagination:
+  data: collections.posts_en_papa
+  size: 20
+  reverse: true
+  alias: posts
+permalink: /en/dad/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber|plus:1 }}/{% endif %}
+---
+
+Dad

@@ -1,0 +1,12 @@
+---
+navtitle: Web
+layout: index.liquid
+pagination:
+  data: collections.posts_fr_web
+  size: 20
+  reverse: true
+  alias: posts
+permalink: /web/{% if pagination.pageNumber > 0 %}page-{{ pagination.pageNumber|plus:1 }}/{% endif %}
+---
+
+Web
