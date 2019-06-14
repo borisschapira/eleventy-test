@@ -1,0 +1,277 @@
+.page-title {
+  grid-column: 1 / 13;
+  text-align: center;
+  background-color: var(--color-main-grayfade);
+  margin: 0;
+  padding: $global-gutters/2;
+
+  h1 {
+    margin: 0;
+  }
+
+  small {
+    display: block;
+    font-size: 0.9em;
+
+    &.page {
+      display: inline;
+      font-size: 0.8em;
+    }
+  }
+}
+
+.meta {
+  font-size: 0.95rem;
+  color: var(--color-main-gray);
+  margin-top: $global-gutters/2;
+
+  > span {
+    &::before {
+      content: "\00a0·\00a0";
+    }
+  }
+
+  > span,
+  > time {
+    display: inline-block;
+    margin-bottom: 0;
+    color: var(--color-main-gray);
+
+    a:not(.category) {
+      color: var(--color-main-gray);
+    }
+  }
+}
+
+.nav-arrow {
+  margin: 1vw;
+  position: fixed;
+  height: 70vh;
+  font-size: 1.5rem;
+
+  @include media(">=small") {
+    font-size: 2rem;
+  }
+
+  @include media(">=large") {
+    margin: 5vw;
+  }
+
+  a {
+    line-height: 70vh;
+    @include media("<=small") {
+      &:before {
+        content: " ";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        cursor: pointer;
+        background-color: transparent;
+      }
+    }
+
+    background-color: var(--color-main-background);
+    border-radius: 50%;
+    padding: 0.5rem;
+  }
+
+  &.prev {
+    left: 0;
+  }
+
+  &.next {
+    right: 0;
+  }
+}
+
+.post {
+  &:not(#content) {
+    padding: 2rem 0;
+    .meta {
+      margin-top: 0;
+    }
+  }
+
+  border-bottom: $border-separators solid var(--color-main-grayfade);
+
+  &:last-of-type:not(:only-of-type) {
+    border-bottom: none;
+  }
+
+  .post-title {
+    margin-top: 0;
+  }
+  .post-content {
+    h2:first-child {
+      font-size: 1.6rem;
+      font-weight: normal;
+      line-height: 1.2rem;
+      margin-top: -1rem;
+      margin-bottom: 1em;
+      letter-spacing: 0;
+      text-transform: lowercase;
+    }
+  }
+}
+
+.post-content > .videoWrapper {
+  @include bleed(100vw);
+}
+
+.videoWrapper {
+  position: relative;
+  height: 0;
+  margin: 2em 0;
+  padding-top: 25px;
+  padding-bottom: 70%;
+
+  iframe,
+  object,
+  embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+div.highlighter-rouge {
+  @include bleed(80vw);
+  border: 1px solid var(--color-main-gray);
+
+  .highlight {
+    margin: 0;
+    padding: 1rem;
+  }
+}
+
+figure {
+  text-align: center;
+  @include bleed(80vw);
+
+  /** http://www.24joursdeweb.fr/2015/pseudo-elements-pseudos-mais-puissants/ **/
+  > a,
+  .video-container {
+    position: relative;
+    display: inline-block;
+  }
+
+  > a {
+    cursor: zoom-in;
+  }
+
+  > .videoWrapper {
+    position: relative;
+    display: block;
+    height: auto;
+    margin: auto;
+    padding: 0;
+
+    > video {
+      width: 100%;
+      border: 1px solid var(--color-main);
+      object-fit: contain;
+    }
+
+    &.gif > video {
+      width: auto;
+      min-width: 250px;
+      min-height: 250px;
+      max-width: 100%;
+      border: none;
+    }
+
+    &.gif.playing::before,
+    &.gif.playing::before {
+      opacity: 0;
+    }
+
+    &.gif {
+      cursor: pointer;
+    }
+  }
+
+  > a:hover::before,
+  > a:focus::before {
+    opacity: 1;
+  }
+
+  /** **/
+  picture,
+  img {
+    height: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    margin-left: auto;
+  }
+
+  .gallery {
+    display: flex;
+
+    img {
+      min-width: none;
+    }
+  }
+
+  figcaption {
+    font-style: italic;
+    max-width: 80%;
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+}
+
+table {
+  @include bleed(80vw);
+  border: solid 1px var(--color-main-text);
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: var(--color-main-text);
+
+  thead {
+    th {
+      border: solid 1px var(--color-main-text);
+      padding: 0.5rem;
+    }
+    th,
+    th strong {
+      background-color: var(--color-main);
+      color: var(--color-main-background);
+    }
+  }
+
+  tbody td {
+    border: solid 1px var(--color-main-text);
+    padding: 0.5rem;
+  }
+}
+
+.post-footer > div {
+  border-bottom: 2px solid var(--color-main-grayfade);
+}
+
+strong {
+  color: var(--color-main);
+}
+
+a {
+  .post-content & {
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: dotted;
+    }
+  }
+
+  &.reversefootnote {
+    background: none;
+  }
+
+  &:hover {
+    color: var(--color-main-highlight);
+  }
+}

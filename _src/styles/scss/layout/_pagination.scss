@@ -1,0 +1,33 @@
+.pagination {
+  @extend %li-no-list-style;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  margin: 3em auto;
+  padding: 0;
+  color: var(--color-text);
+  max-width: 15rem;
+  li {
+    flex-grow: 1;
+    text-align: center;
+    a,
+    strong {
+      padding: 0.1em 0.3em;
+      text-decoration: none;
+    }
+    a {
+      border: 2px solid;
+      border-color: var(--color-main);
+      background-color: var(--color-main);
+      color: #fff;
+    }
+    a:hover {
+      background: none;
+      color: var(--color-text);
+    }
+    strong {
+      font-weight: 400;
+      color: var(--color-text);
+    }
+  }
+}
