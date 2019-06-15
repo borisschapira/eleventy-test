@@ -101,7 +101,8 @@
     "rmfr": "^2.0.0",
     "rss-parser": "^3.7.1",
     "uglify-es": "github:mishoo/UglifyJS2#harmony",
-    "var": "^0.3.2"
+    "var": "^0.3.2",
+    "@borisschapira/eleventy-plugin-better-slug": "github:borisschapira/eleventy-plugin-better-slug"
   },
   "dependencies": {
     "abbr-touch": "^2.1.6",

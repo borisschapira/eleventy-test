@@ -3,9 +3,11 @@ const fs = require("fs");
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const htmlmin = require("html-minifier");
+const pluginBetterSlug = require("@borisschapira/eleventy-plugin-better-slug");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
+  eleventyConfig.addPlugin(pluginBetterSlug);
   eleventyConfig.addPlugin(pluginSyntaxHighlight, {
     // Change which syntax highlighters are installed
     templateFormats: ["terminal", "js", "bash"] // default
