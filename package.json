@@ -64,6 +64,7 @@
     "@11ty/eleventy": "^0.8.3",
     "@11ty/eleventy-plugin-rss": "^1.0.6",
     "@11ty/eleventy-plugin-syntaxhighlight": "^2.0.1",
+    "@borisschapira/eleventy-plugin-better-slug": "github:borisschapira/eleventy-plugin-better-slug",
     "@fullhuman/postcss-purgecss": "^1.1.0",
     "autoprefixer": "^9.2.1",
     "chai": "^4.2.0",
@@ -93,7 +94,7 @@
     "postcss": "^7.0.5",
     "postcss-cli": "^6.0.0",
     "postcss-purgecss": "^1.0.0",
-    "prettier": "^1.16.1",
+    "prettier": "^1.18.2",
     "puppeteer": "^1.17.0",
     "purify-css": "^1.2.5",
     "request": "^2.88.0",
@@ -101,13 +102,12 @@
     "rmfr": "^2.0.0",
     "rss-parser": "^3.7.1",
     "uglify-es": "github:mishoo/UglifyJS2#harmony",
-    "var": "^0.3.2",
-    "@borisschapira/eleventy-plugin-better-slug": "github:borisschapira/eleventy-plugin-better-slug"
+    "var": "^0.3.2"
   },
   "dependencies": {
     "abbr-touch": "^2.1.6",
     "acorn": "^6.1.1",
-    "easy-toggle-state": "^1.10.0",
+    "easy-toggle-state": "^1.10.4",
     "instantsearch.js": "^2.7.2",
     "jquery": "^3.4",
     "js-md5": "^0.7.3",
