@@ -12,5 +12,7 @@
   "author": {
     "name": "Your Name Here",
     "email": "youremailaddress@example.com"
-  }
+  },
+  "locale": "fr_FR",
+  "norobots": true
 }

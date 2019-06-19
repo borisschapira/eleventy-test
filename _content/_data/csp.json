@@ -1,0 +1,387 @@
+[
+  {
+     "name": "report-to",
+     "values": [
+        {
+           "value": "csp-endpoint"
+        }
+     ]
+  },
+  {
+     "name": "base-uri",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        }
+     ]
+  },
+  {
+     "name": "default-src",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "object-src",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        }
+     ]
+  },
+  {
+     "name": "script-src",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        },
+        {
+           "value": "'unsafe-eval'",
+           "for": "search"
+        },
+        {
+           "value": "'sha256-8KNm+dQAGYbDur5TAQP2NeGj++e8hwKuri0+mzPyYpY='",
+           "comment": "csspreload inline"
+        },
+        {
+           "value": "'sha256-vE2lAveFIxMFSGQIZCP5CSA+HgZARrlciMK1fhcAoS8='",
+           "comment": "Fonction d'injection de script et style"
+        },
+        {
+           "value": "'sha256-jbhLOhRS3SvH8L2A/yR9exGXTjfQ0ZB8becsU1p6NF8='",
+           "comment": "Injection du script index.min.js"
+        },
+        {
+           "value": "'sha256-V8SBer6vQYIdb9s3Mk1MGe3ChfXQopwjko6Az6HcMBI='",
+           "comment": "Injection du script comments.min.jd"
+        },
+        {
+           "value": "'sha256-/gTtkpNmNQKj0DTBfWs5P0nwTyY/EZSliGw0IRSpWTs='",
+           "comment": "Injection de la CSS de mise en forme du code"
+        },
+        {
+           "value": "'sha256-LDnlgL6UeEG0Blbxa7sjb1atHsbcqtZeyWPqKo40rzo='",
+           "comment": "Recaptcha script"
+        },
+        {
+           "value": "'sha256-42YhTxdvIqBKunoGTRm2oR8l6Y8BmeOEA1GdeMhkz0U='",
+           "comment": "FID log"
+        },
+        {
+           "value": "'sha256-wRiYRnaaEyqKxosvlmLc/4vtkkRUZ+KitW7yW3yCEFc='",
+           "comment": "perf mark : parcing css start"
+        },
+        {
+           "value": "'sha256-d6TAm1ZLPEx/Uk9IDtshxzeaSt9eSP6JqV9LR6JeR/M='",
+           "comment": "perf mark : parcing css end & measure"
+        },
+        {
+           "value": "'sha256-zDmGctlEN4JPwYUNPNKBfQXeG4jlALO5SknIxHg4+0k='",
+           "comment": "perf mark : parcing js start"
+        },
+        {
+           "value": "'sha256-8VulMXL1T5m5C8fhSKxOhMxPm7uh1+eym0FFVEXk08Q='",
+           "comment": "perf mark : parcing js end & measure"
+        },
+        {
+           "value": "'sha256-l0q7AnMSITSg78ACMeL+J3aLNPAwBRSMeL9sPnxuufk='",
+           "comment": "Required for Algolia"
+        },
+        {
+           "value": "'sha256-/nbpAO9mnvMAIAAfkT+76AExqE6rOobRTr2f7L1IAIk='",
+           "comment": "Injection script de search.min.js"
+        },
+        {
+           "value": "'sha256-4RZbsHZj3mmis52ABTtkFzcAV9UxhvUE0NeKQMXPHrY='",
+           "comment": "Jekyll PWA Plugin SW declaration"
+        },
+        {
+           "value": "'sha256-O/7NBXBUAE2ZPlQUelDQ9rIGiJJfdkD3jdJlygZOUks='",
+           "comment": "Switch to Dark Mode"
+        },
+        {
+           "value": "'sha256-TfVxxWG/LjsHb5qDYMMyaCrVksrcaUHBXQVVncPJZXA='",
+           "comment": "Matomo analytics"
+        },
+        {
+           "value": "*.twimg.com",
+           "comment": "Twitter"
+        },
+        {
+           "value": "*.algolianet.com",
+           "comment": "Algolia – for search"
+        },
+        {
+           "value": "analytics.schapira.dev",
+           "comment": "Matomo analytics"
+        },
+        {
+           "value": "instant.page",
+           "comment": "Instant.page"
+        },
+        {
+           "value": "speakerdeck.com",
+           "comment": "Speakerdeck, for slides"
+        },
+        {
+           "value": "blackhole.webpagetest.org"
+        },
+        {
+           "value": "syndication.twitter.com",
+           "comment": "Twitter"
+        },
+        {
+           "value": "ajax.googleapis.com",
+           "comment": "required by Google Maps"
+        },
+        {
+           "value": "cdn.jsdelivr.net",
+           "comment": "JSDeliver, CDN used by Algolia"
+        },
+        {
+           "value": "platform.twitter.com",
+           "comment": "Twitter"
+        },
+        {
+           "value": "gist.github.com",
+           "comment": "Gist, from Github"
+        },
+        {
+           "value": "www.gstatic.com",
+           "comment": "required by Google services, like Maps"
+        },
+        {
+           "value": "www.google.com",
+           "comment": "required by Google services, like Maps"
+        },
+        {
+           "value": "https://videopress.com",
+           "comment": "Wordpress TV"
+        }
+     ]
+  },
+  {
+     "name": "style-src",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        },
+        {
+           "value": "'unsafe-inline'",
+           "comment": "Inline styles (if I block that, I have thousand of errors…)"
+        },
+        {
+           "value": "platform.twitter.com",
+           "comment": "Embed twitter using loadTwitterWjs"
+        }
+     ]
+  },
+  {
+     "name": "img-src",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        },
+        {
+           "value": "data:",
+           "comment": "Inline images"
+        },
+        {
+           "value": "res.cloudinary.com",
+           "comment": "Cloudinary proxy images"
+        },
+        {
+           "value": "avatars.schapira.dev",
+           "comment": "My avatars"
+        },
+        {
+           "value": "www.gravatar.com",
+           "comment": "Gravatars, for comments"
+        },
+        {
+           "value": "*.ytimg.com *.twimg.com platform.twitter.com syndication.twitter.com",
+           "comment": "Twitter avatars and inclusions"
+        },
+        {
+           "value": "*.googleusercontent.com",
+           "comment": "Google user contents (for maps)"
+        },
+        {
+           "value": "analytics.schapira.dev",
+           "comment": "Matomo analytics"
+        }
+     ]
+  },
+  {
+     "name": "frame-src",
+     "values": [
+        {
+           "value": "'self'",
+           "comment": "This domain"
+        },
+        {
+           "value": "*.vimeo.com",
+           "comment": "Video from Vimeo"
+        },
+        {
+           "value": "*.youtube-nocookie.com",
+           "comment": "Video from Youtube, without cookies set"
+        },
+        {
+           "value": "*.dailymotion.com",
+           "comment": "Video from dailymotion"
+        },
+        {
+           "value": "*.twitter.com",
+           "comment": "Twitter"
+        },
+        {
+           "value": "*.spotify.com",
+           "comment": "Players from Spotify"
+        },
+        {
+           "value": "www.instagram.com"
+        },
+        {
+           "value": "www.slideshare.net"
+        },
+        {
+           "value": "fusiontables.googleusercontent.com"
+        },
+        {
+           "value": "fusiontables.google.com"
+        },
+        {
+           "value": "static01.nyt.com",
+           "comment": "NYT videos"
+        },
+        {
+           "value": "bandcamp.com",
+           "comment": "Bandcamp songs"
+        },
+        {
+           "value": "www.google.com",
+           "comment": "Google"
+        },
+        {
+           "value": "https://videopress.com",
+           "comment": "Wordpress TV"
+        }
+     ]
+  },
+  {
+     "name": "frame-ancestors",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "connect-src",
+     "values": [
+        {
+           "value": "'self'"
+        },
+        {
+           "value": "*.algolianet.com",
+           "comment": "Algolia – for search"
+        },
+        {
+           "value": "*.algolia.net",
+           "comment": "Algolia – for search"
+        },
+        {
+           "value": "cdn.jsdelivr.net",
+           "comment": "required by Algolia – for search"
+        },
+        {
+           "value": "analytics.schapira.dev",
+           "comment": "Matomo analytics"
+        }
+     ]
+  },
+  {
+     "name": "font-src",
+     "values": [
+        {
+           "value": "'self'"
+        },
+        {
+           "value": "cdnjs.cloudflare.com"
+        },
+        {
+           "value": "fonts.gstatic.com"
+        },
+        {
+           "value": "fonts.googleapis.com"
+        }
+     ]
+  },
+  {
+     "name": "form-action",
+     "values": [
+        {
+           "value": "'self'"
+        },
+        {
+           "value": "syndication.twitter.com",
+           "comment": "Twitter"
+        }
+     ]
+  },
+  {
+     "name": "manifest-src",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "media-src",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "worker-src",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "prefetch-src",
+     "values": [
+        {
+           "value": "'self'"
+        }
+     ]
+  },
+  {
+     "name": "block-all-mixed-content"
+  },
+  {
+     "name": "upgrade-insecure-requests"
+  },
+  {
+     "name": "report-uri",
+     "values": [
+        {
+           "value": "https://borisschapira.report-uri.com/r/d/csp/enforce",
+           "comment": "report-uri is deprecated in CSP3 but kept here for support"
+        }
+     ]
+  }
+]

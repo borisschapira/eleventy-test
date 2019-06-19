@@ -1,0 +1,13 @@
+{% set socialTitle = title %}
+{% set socialDescription = metadata.description %}
+{% set socialLogo = metadata.cloudinary.logo %}
+{% set socialImage = 'https://avatars.borisschapira.com/avataaars_1200.png' %}
+{% set socialColor = styles.main.color %}
+
+{% if layout == 'archive' %}
+  {% if type == 'year' %}
+    {% set socialTitle %}{{ 'Année' | t(locale) }}{% endset %}
+  {% endif %}
+{% endif %}
+
+{{ 'Année' | t(locale) }}

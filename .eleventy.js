@@ -4,10 +4,15 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginSyntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const htmlmin = require("html-minifier");
 const pluginBetterSlug = require("@borisschapira/eleventy-plugin-better-slug");
+const translations = require("./_content/_data/translations");
 
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPlugin(pluginRss);
-  eleventyConfig.addPlugin(pluginBetterSlug);
+  eleventyConfig.addPlugin(pluginBetterSlug, {
+    extensions: {
+      "'": "-"
+    }
+  });
   eleventyConfig.addPlugin(pluginSyntaxHighlight, {
     // Change which syntax highlighters are installed
     templateFormats: ["terminal", "js", "bash"] // default
@@ -84,6 +89,28 @@ module.exports = function(eleventyConfig) {
     return array.slice(0, n);
   });
 
+  // Get the first `n` elements of a collection.
+  eleventyConfig.addFilter("t", (key, locale) => {
+    if (typeof(locale) == "undefined") {
+      // throw new Error("Missing locale in t filter.");
+    } else if (locale != 'fr') {
+      return translations[locale][key];
+    }
+
+    return key;
+  });
+
+  /********************************
+   * Shortcodes                   *
+   ********************************/
+
+  const buildDate = Date.now();
+  eleventyConfig.addShortcode("version", () => buildDate.toString());
+  eleventyConfig.addShortcode("test", () => this);
+
+  /********************************
+   * Static assets                 *
+   ********************************/
   eleventyConfig.addPassthroughCopy("assets");
   eleventyConfig.addPassthroughCopy("functions");
   eleventyConfig.addPassthroughCopy("robots.txt");

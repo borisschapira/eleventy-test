@@ -1,0 +1,18 @@
+{
+   "citoyen": {
+      "css": "citoyen",
+      "color": "11626e"
+   },
+   "papa": {
+      "css": "papa",
+      "color": "008000"
+   },
+   "web": {
+      "css": "web",
+      "color": "0a69c7"
+   },
+   "main": {
+      "css": "main",
+      "color": "790640"
+   }
+}

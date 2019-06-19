@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="{{ locale or metadata.locale or 'fr' }}">
+  <head>
+    {# <!-- nomicrotypo -->
+
+    <meta charset="utf-8" />
+
+    <script>
+      {% include first-input-delay.min.js %}
+      perfMetrics.onFirstInputDelay(function(delay, evt) {
+        console.log('FID', evt.type, Math.round(evt.timeStamp) + 'ms' , Math.round(delay));
+        var _paq = window._paq || [];
+        _paq && _paq.push(['trackEvent', 'Performance', 'FID', evt.type]);
+        _paq && _paq.push(['trackEvent', 'Performance', 'FID', 'Timestamp', Math.round(evt.timeStamp)]);
+        _paq && _paq.push(['trackEvent', 'Performance', 'FID', 'Delay', Math.round(delay)]);
+      });
+    </script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    {% comment %} Prefetching of domains that I am likely to use {% endcomment %}
+    <link rel="preconnect dns-prefetch" href="https://res.cloudinary.com">
+    {% comment %} / Prefetching of domains that I am likely to use {% endcomment %}
+
+    {% comment %} Prefetching previous and next pages {% endcomment %}
+    <link rel='preconnect dns-prefetch' href="https://analytics.schapira.dev/matomo.js">
+    {% if page.next_context or page.prev_context %}
+        {% if page.prev_context %}
+    <link rel="prefetch" href="{{page.prev_context.url}}">
+        {% endif %}
+        {% if page.next_context %}
+    <link rel="prefetch" href="{{page.next_context.url}}">
+        {% endif %}
+    {% endif %}
+    {% comment %} / Prefetching previous and next pages {% endcomment %}
+
+    {% comment %} Preloading the fonts and styles for later use {% endcomment %}
+    <link rel="preload" as="style" href="{% include assets/css.html.liquid name='/assets/styles/critical' %}" data-proofer-ignore>
+    <link rel="preload" as="style" href="{% include assets/css.html.liquid name='/assets/styles/main' %}" data-proofer-ignore>
+    <link rel="preload" as="style" href="/assets/styles/hl.css" data-proofer-ignore>
+    <link rel="prefetch" as="style" href="{% include assets/css.html.liquid name='/assets/styles/vendors/instantsearch.min' %}" data-proofer-ignore>
+    <link rel="prefetch" as="style" href="{% include assets/css.html.liquid name='/assets/styles/vendors/instantsearch-theme-algolia.min' %}" data-proofer-ignore>
+    {% comment %} / Preloading the fonts and styles for later use {% endcomment %}
+
+    {% comment %} Styles {% endcomment %}
+    <script>performance.mark('mark_declare_css_start');</script>
+    <link href="{% include assets/css.html.liquid name='/assets/styles/critical' %}" rel="stylesheet" data-proofer-ignore>
+    <link href="{% include assets/css.html.liquid name='/assets/styles/main' %}" rel="stylesheet" data-proofer-ignore>
+    {% if page.i18n-key == "search" %}
+    <link href="{% include assets/css.html.liquid name='/assets/styles/vendors/instantsearch.min' %}" rel="stylesheet" data-proofer-ignore>
+    <link href="{% include assets/css.html.liquid name='/assets/styles/vendors/instantsearch-theme-algolia.min' %}" rel="stylesheet" data-proofer-ignore>
+    {% endif %}
+    <script>performance.mark('mark_declare_css_end');performance.measure('mark_declare_css', 'mark_declare_css_start', 'mark_declare_css_end');</script>
+    {% comment %} / Styles {% endcomment %}
+
+    {% comment %} Webmentions (for later use ?) {% endcomment %}
+    <link rel="pingback" href="https://webmention.io/webmention?forward=https://webmention.io/borisschapira.com/webmention" />
+    <link rel="webmention" href="https://webmention.io/borisschapira.com/webmention" />
+    {% comment %} / Webmentions (for later use ?) {% endcomment %}
+
+    <!-- RSS -->
+    {% assign feed_url = "feed.xml" %}
+    {% if page.category %}
+      {% assign feed_url = page.category | t(locale) | downcase | append: '/' | append: feed_url %}
+    {% endif %}
+    <link rel="alternate" type="application/rss+xml" href="{{ feed_url | prepend: page.baseurl | relative_url }}">
+
+    {% if page.translation %}
+    <link rel="alternate" hreflang="{{ page.translation.locale }}" href="{{ page.translation.url }}"/>
+    {% endif %}
+
+    {% if metadata.norobots or page.norobots %}
+    <meta name="robots" content="noindex,nofollow">
+    {% elsif paginator and paginator.page > 1 %}
+    <meta name="robots" content="noindex,follow">
+    {% endif %}
+
+    <title>{{ page.social.title | strip_html }}</title>
+    {% if page.canonical %}
+      <link rel="canonical" href="{{ page.canonical }}" data-proofer-ignore/>
+    {% else %}
+    <link rel="canonical" href="{{ page.url | absolute_url }}" data-proofer-ignore/>
+    {% endif %}
+
+    <meta name="description" content="{{ page.social.description }}" />
+    <meta property="og:url" content="{{ page.url }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ page.social.title }}" />
+    <meta property="og:image" content="{{ page.social.image }}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="{{ metadata.name }}" />
+
+    <meta property="article:author" content="{{ metadata.author.name }}" />
+    <meta property="article:published_time" content="{{ page.date | date: "%Y-%m-%d" }}" />
+
+    {% if page.category %}
+    <meta property="article:section" content="{{ page.category }}" />
+    {% endif %}
+
+    {% for tag in page.tags %}
+    <meta property="article:tag" content="{{ tag }}" />
+    {% endfor %}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:domain" content="{{ metadata.domain }}" />
+    <meta name="twitter:title" content="{{ page.social.title }}" />
+    <meta name="twitter:description" content="{{ page.social.description }}" />
+    <meta property="twitter:label1" content="Par" />
+    <meta property="twitter:data1" content="{{ page.author.name or metadata.author.name }}" />
+
+    {% if page.category %}
+    <meta property="twitter:label2" content="{{ "Catégorie" | t:page.locale }}" />
+    <meta property="twitter:data2" content="{{ page.category | capitalize }}" />
+    {% endif %}
+
+    <meta name="twitter:image" content="{{ page.social.image }}">
+    <meta name="twitter:creator" content="{{ metadata.author.twitter_username }}" />
+    <meta name="twitter:site" content="{{ metadata.author.twitter_username }}" />
+    <meta name="twitter:widgets:link-color" content="#{{ page.social.color }}">
+    <meta name="twitter:widgets:border-color" content="#{{ page.social.color }}">
+    <meta name="twitter:dnt" content="on">
+    <meta name="twitter:widgets:csp" content="on">
+
+    <!-- Real favicon generator -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=E6jXRBAgkK" data-proofer-ignore>
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=E6jXRBAgkK" data-proofer-ignore>
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=E6jXRBAgkK" data-proofer-ignore>
+    <link rel="manifest" href="/manifest.json?v=E6jXRBAgkK" data-proofer-ignore>
+    <link rel="shortcut icon" href="/favicon.ico?v=E6jXRBAgkK" data-proofer-ignore>
+    <meta name="theme-color" content="#{{ page.social.color }}">
+
+    <!-- endnomicrotypo --> #}
+  </head>
+
+  <body>
+    <input type="radio" id="color-mode-auto" name="dark-mode-input" value="auto">
+    <input type="radio" id="color-mode-dark" name="dark-mode-input" value="true">
+    <input type="radio" id="color-mode-light" name="dark-mode-input" value="false">
+    <script>
+      (function(){
+        var ls = localStorage.getItem('dark_mode');
+        if (ls !== null) {
+          document.querySelector('[name="dark-mode-input"][value="'+ ls +'"]').checked = true;
+        }
+      })()
+    </script>
+    <div class="menu-state colorized {% if page.category %}{{page.category}}{% else %}main{% endif %} color-container">
+      <a class="skip-main" href="#main">{{ "Aller directement au contenu principal" | t(locale) }}</a>
+      {# <header class="nav-header">
+        <a href="{{ page.baseurl | relative_url }}" class="title">
+          {{ metadata.title }}
+        </a>
+        <nav>
+          <button class="menu-trigger button" aria-controls="main-nav" aria-expanded="false" id="menu-trigger" data-toggle-class="menu-open"
+          data-toggle-escape data-toggle-target-all=".menu-state">
+            <span class="menu-label">{{ "menu" | t(locale) }}</span>
+            <span class="close-label">{{ "fermer" | t(locale) }}</span>
+          </button>
+          <ul class="menu" id="main-nav">
+            <li {% if page.type == 'post' or page.layout == 'index' %}class="active"{% endif %}><a href="{{ page.baseurl | relative_url }}">{{ "Notes" | t(locale) }}</a></li>
+
+            <li {% if page.i18n-key == 'about' %}class="active"{% endif %}>
+              <a href="{{ "a-propos" | t:page.locale | prepend: page.baseurl | relative_url }}/">{{ "À propos" | t(locale) }}</a>
+            </li>
+
+            <li {% if page.i18n-key == 'about' %}class="active"{% endif %}>
+              <a href="{{ "partager" | t:page.locale | prepend: page.baseurl | relative_url }}/">{{ "Partager" | t(locale) }}</a>
+            </li>
+
+            <li {% if page.i18n-key == 'search' %}class="active"{% endif %}>
+            <a href="{{ 'recherche' | t(locale) | prepend: page.baseurl | relative_url }}/">{{ "Recherche" | t(locale) }}</a>
+            </li>
+
+            {% if page.translation %}
+            <li>{% include read_in.html.liquid
+                    locale=page.translation.locale
+                    url=page.translation.url %}</li>
+            {% endif %}
+
+            <li class="color-mode-labels"><!-- nomicrotypo -->{% include dark-mode.svg %}<!-- endnomicrotypo -->
+
+              <label class="auto-mode" for="color-mode-dark" data-value="true" tabindex="0" role="button"><span class="sr-only">Auto Mode</span><svg class="icon"><use xlink:href="#icon-mode-auto" /></svg></label>
+
+              <label class="dark-mode" for="color-mode-light" data-value="false" tabindex="0" role="button"><span class="sr-only">Dark Mode</span><svg class="icon"><use xlink:href="#icon-mode-dark" /></svg></label>
+
+              <label class="light-mode" for="color-mode-auto" data-value="auto" tabindex="0" role="button"><span class="sr-only">Light Mode</span><svg class="icon"><use xlink:href="#icon-mode-light" /></svg></label>
+
+            </li>
+          </ul>
+        </nav>
+      </header> #}
+      <div class="page-title"><h1>{{ page.title }}{%if page.subtitle %}<small>{{ page.subtitle }}</small>{% endif %}</h1>{% if page.layout=='post'%}<div class="meta"><time class="dt-published" datetime="{{ datetime }}">{% unless page.locale =='fr' %}{% include date_en.html.liquid postDate=page.date locale=page.locale %}{% else %}{{ page.date | l: '%A %-d', page.locale }} <a href="{{ page.date | l: '%Y/%m/', page.locale | relative_url }}" title="{{ "Articles de" | t(locale) }} {{ page.date | l: '%B %Y', page.locale }}">{{ page.date | l: '%B', page.locale }}</a> <a href="{{ page.date | l: '%Y/', page.locale | relative_url }}" title="{{ "Articles de" | t(locale) }} {{ page.date | l: '%Y', page.locale }}">{{ page.date | l: '%Y', page.locale }}</a>{% endunless %}</time>{% if displayCategory %}<span><a href="{{ page.category | t(locale) | prepend: page.baseurl | relative_url }}/" title="{{ "Articles de" | t(locale) }} {{ "la catégorie" | t(locale) }} {{ page.category }}" class="category {% if page.category %}{{page.category}}{% else %}main{% endif %}">{{ page.category | t(locale) }}</a></span>{% endif %}{% if page.serie %}<span><a href="/tag/{{ page.serie | slugify }}">{{ page.serie }}</a></span>{% endif %}{% if page.translation %}<span>{% include read_in.html.liquid
+        locale=page.translation.locale
+        url=page.translation.url %}</span>{% endif %}</div>{% endif %}</div>
+      <section class="container{% if page.layout=='post' or page.layout=='page' or page.layout=='conf' %} full-width-content{% endif %}">
+        <div class="content" role="main" id="main">
+          {{ content }}
+
+        {% include pagination.liquid %}
+
+        </div>
+        {% if page.layout=='post' and page.prev_context %}
+          <div class="nav-arrow prev"><a href="{{page.prev_context.url}}" title="{{ page.prev_context.title }}"><span class="sr-only">{{ "Précédent :" | t(locale) }}</span><span aria-hidden="true">&#8672;</span></a></div>
+        {% endif %}
+        {% if page.layout=='post' and page.next_context %}
+          <div class="nav-arrow next"><a href="{{page.next_context.url}}" title="{{ page.next_context.title }}"><span class="sr-only">{{ "Suivant :" | t(locale) }}</span><span aria-hidden="true">&#8674;</span></a>
+        {% endif %}
+        <aside>
+          <div class="widget" aria-hidden="true">
+            <!-- nomicrotypo -->{% include avatar.svg %}<!-- endnomicrotypo -->
+          </div>
+          <div class="widget">
+            <h2>{{ "Catégories" | t(locale) }}</h2>
+            <ul>
+              <li><a class="main {% unless page.category %}active{% endunless %}" href="{{ '' | prepend: page.baseurl | relative_url }}" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "toutes" | t(locale) }}</a></li>
+              <li><a class="web {% if page.category == 'web' %}active{% endif %}" href="{{ 'web' | prepend: page.baseurl | relative_url }}/" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "web" | t(locale) }}</a></li>
+              <li>
+              <a class="citoyen {% if page.category == 'citoyen' %}active{% endif %}" href="{{ 'citoyen' | t(locale) | prepend: page.baseurl | relative_url }}/" itemscope itemtype="http://schema.org/Thing" itemprop="item">{{ "citoyen" | t(locale) }}</a>
+              </li>
+              <li>
+              <a class="papa {% if page.category == 'papa' %}active{% endif %}" href="{{ 'papa' | t(locale) | prepend: page.baseurl | relative_url }}/">{{ "papa" | t(locale) }}</a>
+              </li>
+            </ul>
+          </div>
+        </aside>
+      </section>
+      <footer class="main-footer">
+        <div class="nav-footer">
+          <p>
+            {{ "Retrouvez-moi" | t(locale) }} {{ "sur" | t(locale) }} <a class="npe" rel="me nofollow" href="{{ metadata.author.github }}">Github</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.twitter }}">Twitter</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.mastodon }}">Mastodon</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.linkedin }}">LinkedIn</a> {{ "et" | t(locale) }} <a class="npe" rel="me nofollow" href="{{ metadata.author.flickr }}">Flickr</a>.
+            <br />
+            {{ "Site statique" | t(locale) }} <a href="{{ "a-propos" | t:page.locale | prepend: page.baseurl | relative_url }}/site/">{{ "compilé par Jekyll, propulsé par Netlify et Cloudinary" | t(locale) }}</a>.
+            <br />
+            <a class="npe" rel="me nofollow" href="{{ feed_url | prepend: page.baseurl | relative_url }}">{{ "Abonnez-vous au flux" | t(locale) }}</a>
+          </p>
+        </div>
+      </footer>
+    </div>
+    {% include footer.html.liquid layout=page.layout loadTwitterWjs=page.loadTwitterWjs loadSearch=page.loadSearch %}
+    <script src="//instant.page/1.2.2" type="module" integrity="sha384-2xV8M5griQmzyiY3CDqh1dn4z3llDVqZDqzjzcY+jCBCk/a5fXJmuZ/40JJAPeoU"></script>
+    <script type="application/ld+json">
+      {
+          "@context": "http://schema.org",
+          "@type": "WebPage",
+          "name": "{{ page.social.title | strip_html }}",
+          "description": "{{ page.social.description | strip_html }}",
+          "url": "{{ page.baseurl | absolute_url }}"
+      }
+    </script>
+    {% unless jekyll.environment == "development" %}
+    <!-- Matomo -->
+    <script type="text/javascript">
+      var _paq = window._paq || [];
+      /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+      _paq.push(['trackPageView']);
+      _paq.push(['enableLinkTracking']);
+      (function() {
+        var u="//analytics.schapira.dev/";
+        _paq.push(['setTrackerUrl', u+'matomo.php']);
+        _paq.push(['setSiteId', '1']);
+        var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+        g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+      })();
+    </script>
+    <!-- End Matomo Code -->
+    {% endunless %}
+  </body></html>

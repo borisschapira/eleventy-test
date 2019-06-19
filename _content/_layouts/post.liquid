@@ -7,9 +7,10 @@ templateClass: tmpl-post
   <li>locale: {{ locale }}</li>
   <li>title: {{ title }}</li>
   <li>slug: {{ slug }}</li>
-  <li>fileSlug: {{ page.fileSlug }}</li>
+  <li>page.fileSlug: {{ page.fileSlug }}</li>
   <li>category: {{ category }}</li>
   <li>i18n-key: {{ i18n-key }}</li>
+  <li>layout: {{ layout }}</li>
   <li>previous: <a href="{{ previous.url | url }}">{{ previous.title }}</a></li>
   <li>next: <a href="{{ next.url | url }}">{{ next.title }}</a></li>
 </ul>
