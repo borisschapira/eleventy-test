@@ -1,0 +1,19 @@
+---
+navtitle: FR
+permalink: /characters/
+layout: base.njk
+---
+
+{% comment %} https://github.com/nhoizey/nicolas-hoizey.com/blob/master/tools/every-char.html {% endcomment %}
+
+{% assign every_char = '' %}
+{% for post in collections.posts %}
+  {% capture post_chars %}
+    {{ post.data.title }}
+    {{ post.templateContent }}
+  {% endcapture %}
+  {% capture new_every_char %}{{ every_char }}{{ post_chars | strip_html | split: "" | uniq | join: "" }}
+  {% endcapture %}
+  {% assign every_char = new_every_char %}
+{% endfor %}
+{{ every_char | strip_html | split: "" | uniq | sort | join: "" }}
