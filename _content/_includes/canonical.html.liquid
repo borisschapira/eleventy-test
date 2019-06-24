@@ -1,3 +1,5 @@
+{{ locale }}
+{{ 'Année' | t: locale }}
 <div class="canonical">
-<strong>{{ "Note :" | t: include.locale }}</strong> {{ "cet article a d'abord été publié sur" | t: include.locale }} <a href="{{ include.canonical }}">{{ include.title }}</a>.
+<strong>{{ "Note :" | t:locale }}</strong> {{ "cet article a d'abord été publié sur" | t: locale }} <a href="{{ canonical }}">{{ title }}</a>.
 </div>

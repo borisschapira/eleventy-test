@@ -6,8 +6,8 @@
 
 {% if layout == 'archive' %}
   {% if type == 'year' %}
-    {% set socialTitle %}{{ 'Année' | t(locale) }}{% endset %}
+    {% set socialTitle %}{{ 'Année' | t: locale }}{% endset %}
   {% endif %}
 {% endif %}
 
-{{ 'Année' | t(locale) }}
+{{ 'Année' | t: locale }}

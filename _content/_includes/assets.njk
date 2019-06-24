@@ -1,3 +1,0 @@
-{% macro asset(name, extension='') %}{{ name }}.{{ extension }}?version={% version %}{% endmacro %}
-{% macro css(name) %}{{ asset(name, 'css') }}{% endmacro %}
-{% macro js(name) %}{{ asset(name, 'js') }}{% endmacro %}

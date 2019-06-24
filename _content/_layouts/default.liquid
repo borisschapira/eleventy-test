@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="{{ locale or metadata.locale or 'fr' }}">
+<html lang="{{ locale | default: metadata.locale | default: "fr_FR" }}">
   <head>
-    {# <!-- nomicrotypo -->
+    <!-- nomicrotypo -->
 
     <meta charset="utf-8" />
 
     <script>
-      {% include first-input-delay.min.js %}
+      {% include inline_scripts/first_input_delay.min.js %}
       perfMetrics.onFirstInputDelay(function(delay, evt) {
         console.log('FID', evt.type, Math.round(evt.timeStamp) + 'ms' , Math.round(delay));
         var _paq = window._paq || [];
@@ -61,15 +61,15 @@
     <!-- RSS -->
     {% assign feed_url = "feed.xml" %}
     {% if page.category %}
-      {% assign feed_url = page.category | t(locale) | downcase | append: '/' | append: feed_url %}
+      {% assign feed_url = page.category | t: locale | downcase | append: '/' | append: feed_url %}
     {% endif %}
-    <link rel="alternate" type="application/rss+xml" href="{{ feed_url | prepend: page.baseurl | relative_url }}">
+    <link rel="alternate" type="application/rss+xml" href="{{ feed_url | prepend: baseurl | url }}">
 
     {% if page.translation %}
     <link rel="alternate" hreflang="{{ page.translation.locale }}" href="{{ page.translation.url }}"/>
     {% endif %}
 
-    {% if metadata.norobots or page.norobots %}
+    {% if site.norobots or page.norobots %}
     <meta name="robots" content="noindex,nofollow">
     {% elsif paginator and paginator.page > 1 %}
     <meta name="robots" content="noindex,follow">
@@ -89,9 +89,9 @@
     <meta property="og:image" content="{{ page.social.image }}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:site_name" content="{{ metadata.name }}" />
+    <meta property="og:site_name" content="{{ site.name }}" />
 
-    <meta property="article:author" content="{{ metadata.author.name }}" />
+    <meta property="article:author" content="{{ site.author.name }}" />
     <meta property="article:published_time" content="{{ page.date | date: "%Y-%m-%d" }}" />
 
     {% if page.category %}
@@ -103,20 +103,20 @@
     {% endfor %}
 
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:domain" content="{{ metadata.domain }}" />
+    <meta name="twitter:domain" content="{{ site.domain }}" />
     <meta name="twitter:title" content="{{ page.social.title }}" />
     <meta name="twitter:description" content="{{ page.social.description }}" />
     <meta property="twitter:label1" content="Par" />
-    <meta property="twitter:data1" content="{{ page.author.name or metadata.author.name }}" />
+    <meta property="twitter:data1" content="{{ page.author.name | default: site.author.name }}" />
 
     {% if page.category %}
-    <meta property="twitter:label2" content="{{ "Catégorie" | t:page.locale }}" />
+    <meta property="twitter:label2" content="{{ "Catégorie" | t: locale }}" />
     <meta property="twitter:data2" content="{{ page.category | capitalize }}" />
     {% endif %}
 
     <meta name="twitter:image" content="{{ page.social.image }}">
-    <meta name="twitter:creator" content="{{ metadata.author.twitter_username }}" />
-    <meta name="twitter:site" content="{{ metadata.author.twitter_username }}" />
+    <meta name="twitter:creator" content="{{ site.author.twitter_username }}" />
+    <meta name="twitter:site" content="{{ site.author.twitter_username }}" />
     <meta name="twitter:widgets:link-color" content="#{{ page.social.color }}">
     <meta name="twitter:widgets:border-color" content="#{{ page.social.color }}">
     <meta name="twitter:dnt" content="on">
@@ -130,7 +130,7 @@
     <link rel="shortcut icon" href="/favicon.ico?v=E6jXRBAgkK" data-proofer-ignore>
     <meta name="theme-color" content="#{{ page.social.color }}">
 
-    <!-- endnomicrotypo --> #}
+    <!-- endnomicrotypo -->
   </head>
 
   <body>
@@ -146,30 +146,30 @@
       })()
     </script>
     <div class="menu-state colorized {% if page.category %}{{page.category}}{% else %}main{% endif %} color-container">
-      <a class="skip-main" href="#main">{{ "Aller directement au contenu principal" | t(locale) }}</a>
-      {# <header class="nav-header">
-        <a href="{{ page.baseurl | relative_url }}" class="title">
-          {{ metadata.title }}
+      <a class="skip-main" href="#main">{{ "Aller directement au contenu principal" | t: locale }}</a>
+      <header class="nav-header">
+        <a href="{{ baseurl | url }}" class="title">
+          {{ site.title }}
         </a>
         <nav>
           <button class="menu-trigger button" aria-controls="main-nav" aria-expanded="false" id="menu-trigger" data-toggle-class="menu-open"
           data-toggle-escape data-toggle-target-all=".menu-state">
-            <span class="menu-label">{{ "menu" | t(locale) }}</span>
-            <span class="close-label">{{ "fermer" | t(locale) }}</span>
+            <span class="menu-label">{{ "menu" | t: locale }}</span>
+            <span class="close-label">{{ "fermer" | t: locale }}</span>
           </button>
           <ul class="menu" id="main-nav">
-            <li {% if page.type == 'post' or page.layout == 'index' %}class="active"{% endif %}><a href="{{ page.baseurl | relative_url }}">{{ "Notes" | t(locale) }}</a></li>
+            <li {% if page.type == 'post' or page.layout == 'index' %}class="active"{% endif %}><a href="{{ baseurl | url }}">{{ "Notes" | t: locale }}</a></li>
 
             <li {% if page.i18n-key == 'about' %}class="active"{% endif %}>
-              <a href="{{ "a-propos" | t:page.locale | prepend: page.baseurl | relative_url }}/">{{ "À propos" | t(locale) }}</a>
+              <a href="{{ "a-propos" | t: locale | prepend: baseurl | url }}/">{{ "À propos" | t: locale }}</a>
             </li>
 
             <li {% if page.i18n-key == 'about' %}class="active"{% endif %}>
-              <a href="{{ "partager" | t:page.locale | prepend: page.baseurl | relative_url }}/">{{ "Partager" | t(locale) }}</a>
+              <a href="{{ "partager" | t: locale | prepend: baseurl | url }}/">{{ "Partager" | t: locale }}</a>
             </li>
 
             <li {% if page.i18n-key == 'search' %}class="active"{% endif %}>
-            <a href="{{ 'recherche' | t(locale) | prepend: page.baseurl | relative_url }}/">{{ "Recherche" | t(locale) }}</a>
+            <a href="{{ 'recherche' | t: locale | prepend: baseurl | url }}/">{{ "Recherche" | t: locale }}</a>
             </li>
 
             {% if page.translation %}
@@ -189,37 +189,131 @@
             </li>
           </ul>
         </nav>
-      </header> #}
-      <div class="page-title"><h1>{{ page.title }}{%if page.subtitle %}<small>{{ page.subtitle }}</small>{% endif %}</h1>{% if page.layout=='post'%}<div class="meta"><time class="dt-published" datetime="{{ datetime }}">{% unless page.locale =='fr' %}{% include date_en.html.liquid postDate=page.date locale=page.locale %}{% else %}{{ page.date | l: '%A %-d', page.locale }} <a href="{{ page.date | l: '%Y/%m/', page.locale | relative_url }}" title="{{ "Articles de" | t(locale) }} {{ page.date | l: '%B %Y', page.locale }}">{{ page.date | l: '%B', page.locale }}</a> <a href="{{ page.date | l: '%Y/', page.locale | relative_url }}" title="{{ "Articles de" | t(locale) }} {{ page.date | l: '%Y', page.locale }}">{{ page.date | l: '%Y', page.locale }}</a>{% endunless %}</time>{% if displayCategory %}<span><a href="{{ page.category | t(locale) | prepend: page.baseurl | relative_url }}/" title="{{ "Articles de" | t(locale) }} {{ "la catégorie" | t(locale) }} {{ page.category }}" class="category {% if page.category %}{{page.category}}{% else %}main{% endif %}">{{ page.category | t(locale) }}</a></span>{% endif %}{% if page.serie %}<span><a href="/tag/{{ page.serie | slugify }}">{{ page.serie }}</a></span>{% endif %}{% if page.translation %}<span>{% include read_in.html.liquid
+      </header>
+      <div class="page-title"><h1>{{ page.title }}{%if page.subtitle %}<small>{{ page.subtitle }}</small>{% endif %}</h1>{% if page.layout=='post'%}<div class="meta"><time class="dt-published" datetime="{{ datetime }}">{% unless locale =='fr' %}{% include date_en.html.liquid postDate=page.date locale=page.locale %}{% else %}{{ page.date | l: '%A %-d', locale }} <a href="{{ page.date | l: '%Y/%m/', locale | url }}" title="{{ "Articles de" | t: locale }} {{ page.date | l: '%B %Y', locale }}">{{ page.date | l: '%B', locale }}</a> <a href="{{ page.date | l: '%Y/', locale | url }}" title="{{ "Articles de" | t: locale }} {{ page.date | l: '%Y', locale }}">{{ page.date | l: '%Y', locale }}</a>{% endunless %}</time>{% if displayCategory %}<span><a href="{{ page.category | t: locale | prepend: baseurl | url }}/" title="{{ "Articles de" | t: locale }} {{ "la catégorie" | t: locale }} {{ page.category }}" class="category {% if page.category %}{{page.category}}{% else %}main{% endif %}">{{ page.category | t: locale }}</a></span>{% endif %}{% if page.serie %}<span><a href="/tag/{{ page.serie | slugify }}">{{ page.serie }}</a></span>{% endif %}{% if page.translation %}<span>{% include read_in.html.liquid
         locale=page.translation.locale
         url=page.translation.url %}</span>{% endif %}</div>{% endif %}</div>
       <section class="container{% if page.layout=='post' or page.layout=='page' or page.layout=='conf' %} full-width-content{% endif %}">
         <div class="content" role="main" id="main">
           {{ content }}
 
-        {% include pagination.liquid %}
+        {% if paginator %}
+          {% capture url_prefix %}{% if page.category %}/{{page.category}}{% endif %}{% endcapture %}
+          {% if paginator.total_pages > 1 %}
+          <ul class="pagination">
+            {% comment %} Page précédente {% endcomment %}
+            {% if paginator.previous_page %}
+              {% if paginator.previous_page == 1 %}
+                {% comment %} Si on est sur la page 2, la page précédente est la 1 {% endcomment %}
+                <li>
+                  <a href="{{ url_prefix }}/" rel="prev" ><span class="sr-only">{{ "Accueil" | t: locale }}</span>&lsaquo;</a>
+                </li>
+              {% else %}
+                {% comment %} Sinon, c'est la page d'avant {% endcomment %}
+                <li>
+                  <a href="{{ site.pagination.permalink | replace:':num', paginator.previous_page | prepend: url_prefix }}" rel="prev"><span class="sr-only">{{ "Page précédente" | t: locale }}</span>&lsaquo;</a>
+                </li>
+              {% endif %}
+            {% else %}
+              {% comment %} Si on est sur la page 1, pas de précédente {% endcomment %}
+              <li class="disabled">&lsaquo;</li>
+            {% endif %}
 
+            {% if paginator.page == 1 %}
+              {% comment %} Si on est sur la page 1 {% endcomment %}
+              <li class="disabled">
+                <strong>1</strong>
+              </li>
+            {% else %}
+              {% comment %} Sinon, afficher le lien {% endcomment %}
+              <li>
+                <a href="{{ url_prefix }}/" ><span class="sr-only">{{ "Accueil" | t: locale }}</span>1</a>
+              </li>
+            {% endif %}
+
+            {% comment %} À partir de la page 2 {% endcomment %}
+            {% assign page_start = 2 %}
+            {% if paginator.page > 5 %}
+              {% comment %} Si on est plus loin que la page 5,
+              on affiche "…" et on démarre 2 pages avant {% endcomment %}
+              {% assign page_start = paginator.page | minus: 2 %}
+              <li class="disabled">
+                …
+              </li>
+            {% endif %}
+
+            {% comment %} La dernière page de cette liste, c'est 2 pages avant la fin (mais on commence à compter à 0) {% endcomment %}
+            {% assign page_end = paginator.total_pages | minus: 1 %}
+
+            {% comment %} La distance entre la page courante et la dernière page dans l'absolu {% endcomment %}
+            {% assign to_end = paginator.total_pages | minus: paginator.page %}
+
+            {% comment %} Si cette distance est supérieure à 4, on s'arrêtera 2 pages après la page courante et on affichera "…" {% endcomment %}
+            {% if to_end > 4 %}
+              {% assign page_end = paginator.page | plus: 2 %}
+            {% endif %}
+
+            {% comment %} Production de la liste "du milieu" {% endcomment %}
+            {% for index in (page_start..page_end) %}
+              {% if index == paginator.page %}
+              <li >
+                <strong>{{index}}</strong>
+              </li>
+              {% else %}
+              <li>
+                <a href="{{ site.pagination.permalink | replace:':num', index | prepend: url_prefix }}" ><span class="sr-only">Page</span>{{index}}</a>
+              </li>
+              {% endif %}
+            {% endfor %}
+            {% if to_end > 4 %}
+              <li class="disabled">…</li>
+            {% endif %}
+
+            {% if paginator.page == paginator.total_pages %}
+              <li >
+                <strong>{{paginator.page}}</strong>
+              </li>
+            {% else %}
+              {% assign tp1 = paginator.page | plus: 1 %}
+              <li>
+                <a href="{{ site.pagination.permalink | replace:':num', paginator.total_pages | prepend: url_prefix }}" {% if paginator.total_pages == tp1 %}rel="next"{% endif %}><span class="sr-only">{{ "Dernière page" | t: locale }}</span>{{paginator.total_pages}}</a>
+              </li>
+            {% endif %}
+            {% if paginator.next_page %}
+              {% if paginator.next_page == paginator.total_pages %}
+                <li class="disabled">&raquo;</li>
+              {% else %}
+              <li>
+                <a href="{{ site.pagination.permalink | replace:':num', paginator.next_page | prepend: url_prefix }}" rel="next"><span class="sr-only">{{ "Page suivante" | t: locale }}</span>&rsaquo;</a>
+              </li>
+              {% endif %}
+            {% else %}
+              <li class="disabled">&rsaquo;</li>
+            {% endif %}
+          </ul>
+          {% endif %}
+        {% endif %}
         </div>
         {% if page.layout=='post' and page.prev_context %}
-          <div class="nav-arrow prev"><a href="{{page.prev_context.url}}" title="{{ page.prev_context.title }}"><span class="sr-only">{{ "Précédent :" | t(locale) }}</span><span aria-hidden="true">&#8672;</span></a></div>
+          <div class="nav-arrow prev"><a href="{{page.prev_context.url}}" title="{{ page.prev_context.title }}"><span class="sr-only">{{ "Précédent :" | t: locale }}</span><span aria-hidden="true">&#8672;</span></a></div>
         {% endif %}
         {% if page.layout=='post' and page.next_context %}
-          <div class="nav-arrow next"><a href="{{page.next_context.url}}" title="{{ page.next_context.title }}"><span class="sr-only">{{ "Suivant :" | t(locale) }}</span><span aria-hidden="true">&#8674;</span></a>
+          <div class="nav-arrow next"><a href="{{page.next_context.url}}" title="{{ page.next_context.title }}"><span class="sr-only">{{ "Suivant :" | t: locale }}</span><span aria-hidden="true">&#8674;</span></a>
         {% endif %}
         <aside>
           <div class="widget" aria-hidden="true">
             <!-- nomicrotypo -->{% include avatar.svg %}<!-- endnomicrotypo -->
           </div>
           <div class="widget">
-            <h2>{{ "Catégories" | t(locale) }}</h2>
+            <h2>{{ "Catégories" | t: locale }}</h2>
             <ul>
-              <li><a class="main {% unless page.category %}active{% endunless %}" href="{{ '' | prepend: page.baseurl | relative_url }}" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "toutes" | t(locale) }}</a></li>
-              <li><a class="web {% if page.category == 'web' %}active{% endif %}" href="{{ 'web' | prepend: page.baseurl | relative_url }}/" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "web" | t(locale) }}</a></li>
+              <li><a class="main {% unless page.category %}active{% endunless %}" href="{{ '' | prepend: baseurl | url }}" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "toutes" | t: locale }}</a></li>
+              <li><a class="web {% if page.category == 'web' %}active{% endif %}" href="{{ 'web' | prepend: baseurl | url }}/" itemscope  itemtype="http://schema.org/Thing" itemprop="item">{{ "web" | t: locale }}</a></li>
               <li>
-              <a class="citoyen {% if page.category == 'citoyen' %}active{% endif %}" href="{{ 'citoyen' | t(locale) | prepend: page.baseurl | relative_url }}/" itemscope itemtype="http://schema.org/Thing" itemprop="item">{{ "citoyen" | t(locale) }}</a>
+              <a class="citoyen {% if page.category == 'citoyen' %}active{% endif %}" href="{{ 'citoyen' | t: locale | prepend: baseurl | url }}/" itemscope itemtype="http://schema.org/Thing" itemprop="item">{{ "citoyen" | t: locale }}</a>
               </li>
               <li>
-              <a class="papa {% if page.category == 'papa' %}active{% endif %}" href="{{ 'papa' | t(locale) | prepend: page.baseurl | relative_url }}/">{{ "papa" | t(locale) }}</a>
+              <a class="papa {% if page.category == 'papa' %}active{% endif %}" href="{{ 'papa' | t: locale | prepend: baseurl | url }}/">{{ "papa" | t: locale }}</a>
               </li>
             </ul>
           </div>
@@ -228,11 +322,11 @@
       <footer class="main-footer">
         <div class="nav-footer">
           <p>
-            {{ "Retrouvez-moi" | t(locale) }} {{ "sur" | t(locale) }} <a class="npe" rel="me nofollow" href="{{ metadata.author.github }}">Github</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.twitter }}">Twitter</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.mastodon }}">Mastodon</a>, <a class="npe" rel="me nofollow" href="{{ metadata.author.linkedin }}">LinkedIn</a> {{ "et" | t(locale) }} <a class="npe" rel="me nofollow" href="{{ metadata.author.flickr }}">Flickr</a>.
+            {{ "Retrouvez-moi" | t: locale }} {{ "sur" | t: locale }} <a class="npe" rel="me nofollow" href="{{ site.author.github }}">Github</a>, <a class="npe" rel="me nofollow" href="{{ site.author.twitter }}">Twitter</a>, <a class="npe" rel="me nofollow" href="{{ site.author.mastodon }}">Mastodon</a>, <a class="npe" rel="me nofollow" href="{{ site.author.linkedin }}">LinkedIn</a> {{ "et" | t: locale }} <a class="npe" rel="me nofollow" href="{{ site.author.flickr }}">Flickr</a>.
             <br />
-            {{ "Site statique" | t(locale) }} <a href="{{ "a-propos" | t:page.locale | prepend: page.baseurl | relative_url }}/site/">{{ "compilé par Jekyll, propulsé par Netlify et Cloudinary" | t(locale) }}</a>.
+            {{ "Site statique" | t: locale }} <a href="{{ "a-propos" | t: locale | prepend: baseurl | url }}/site/">{{ "compilé par Jekyll, propulsé par Netlify et Cloudinary" | t: locale }}</a>.
             <br />
-            <a class="npe" rel="me nofollow" href="{{ feed_url | prepend: page.baseurl | relative_url }}">{{ "Abonnez-vous au flux" | t(locale) }}</a>
+            <a class="npe" rel="me nofollow" href="{{ feed_url | prepend: baseurl | url }}">{{ "Abonnez-vous au flux" | t: locale }}</a>
           </p>
         </div>
       </footer>
@@ -245,7 +339,7 @@
           "@type": "WebPage",
           "name": "{{ page.social.title | strip_html }}",
           "description": "{{ page.social.description | strip_html }}",
-          "url": "{{ page.baseurl | absolute_url }}"
+          "url": "{{ baseurl | absolute_url }}"
       }
     </script>
     {% unless jekyll.environment == "development" %}

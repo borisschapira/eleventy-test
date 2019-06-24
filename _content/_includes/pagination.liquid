@@ -6,11 +6,11 @@
   {% if pagination.previousPageHref %}
     {% if currentPage == 2 %}
       <li>
-        <a href="{{ pagination.hrefs[0] | url }}" rel="prev" ><span class="sr-only">{{ "Accueil" | t(locale) }}</span>&lsaquo;</a>
+        <a href="{{ pagination.hrefs[0] | url }}" rel="prev" ><span class="sr-only">{{ "Accueil" | t: locale }}</span>&lsaquo;</a>
       </li>
     {% else %}
       <li>
-        <a href="{{ pagination.previousPageHref | url }}" rel="prev"><span class="sr-only">{{ "Page précédente" | t(locale) }}</span>&lsaquo;</a>
+        <a href="{{ pagination.previousPageHref | url }}" rel="prev"><span class="sr-only">{{ "Page précédente" | t: locale }}</span>&lsaquo;</a>
       </li>
     {% endif %}
   {% else %}
@@ -23,7 +23,7 @@
     </li>
   {% else %}
     <li>
-      <a href="{{ pagination.hrefs[0] | url }}" ><span class="sr-only">{{ "Accueil" | t(locale) }} </span>1</a>
+      <a href="{{ pagination.hrefs[0] | url }}" ><span class="sr-only">{{ "Accueil" | t: locale }} </span>1</a>
     </li>
   {% endif %}
 
@@ -67,7 +67,7 @@
   {% else %}
     {% assign tp1 = currentPage | plus: 1 %}
     <li>
-      <a href="{{ pagination.hrefs[lastPageIndex] | url }}" {% if paginator.total_pages == tp1 %}rel="next"{% endif %}><span class="sr-only">{{ "Dernière page" | t(locale) }} </span>{{nbPages}}</a>
+      <a href="{{ pagination.hrefs[lastPageIndex] | url }}" {% if paginator.total_pages == tp1 %}rel="next"{% endif %}><span class="sr-only">{{ "Dernière page" | t: locale }} </span>{{nbPages}}</a>
     </li>
   {% endif %}
   {% if pagination.nextPageHref %}
@@ -75,7 +75,7 @@
       <li class="disabled">&raquo;</li>
     {% else %}
     <li>
-      <a href="{{ pagination.nextPageHref | url }}" rel="next"><span class="sr-only">{{ "Page suivante" | t(locale) }} </span>&rsaquo;</a>
+      <a href="{{ pagination.nextPageHref | url }}" rel="next"><span class="sr-only">{{ "Page suivante" | t: locale }} </span>&rsaquo;</a>
     </li>
     {% endif %}
   {% else %}

@@ -92,6 +92,7 @@ module.exports = function(eleventyConfig) {
   // Get the first `n` elements of a collection.
   eleventyConfig.addFilter("t", (key, locale) => {
     if (typeof(locale) == "undefined") {
+      console.log("Error", key, locale);
       // throw new Error("Missing locale in t filter.");
     } else if (locale != 'fr') {
       return translations[locale][key];
