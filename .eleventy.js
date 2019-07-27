@@ -78,6 +78,7 @@ module.exports = function(eleventyConfig) {
     collection.getFilteredByGlob("_content/posts/**/*.md").filter(dateContentFilter)
   );
 
+  // create sub-collections for each languague
   for (let i = 0; i < arrLocales.length; i++) {
     const l = arrLocales[i];
     eleventyConfig.addCollection(
@@ -100,8 +101,7 @@ module.exports = function(eleventyConfig) {
     );
   }
 
-  // console.log(alternativesArr);
-
+  // create sub-collections for each language category
   for (let i = 0; i < arrLocales.length; i++) {
     const l = arrLocales[i];
     for (let j = 0; j < arrCategories.length; j++) {
