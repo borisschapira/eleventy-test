@@ -8,12 +8,6 @@ const translations = require("./_content/_data/translations");
 
 module.exports = function(eleventyConfig) {
   const buildDate = new Date();
-  const contentDate = new Date(buildDate.getTime());
-
-  // TODO Replace with a test to detect ENV
-  if (true) {
-    contentDate.setDate(contentDate.getDate() - 30);
-  }
 
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addPlugin(pluginBetterSlug, {
@@ -72,10 +66,9 @@ module.exports = function(eleventyConfig) {
 
   // let alternativesArr = [];
 
-  const dateContentFilter = p => p.date >= contentDate;
-
-  eleventyConfig.addCollection('posts', collection =>
-    collection.getFilteredByGlob("_content/posts/**/*.md").filter(dateContentFilter)
+  eleventyConfig.addCollection("posts", collection =>
+    collection
+      .getFilteredByGlob("_content/posts/**/2019/**/*.md")
   );
 
   // create sub-collections for each languague
@@ -84,7 +77,7 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addCollection(
       `posts_${l}`,
       collection =>
-        collection.getFilteredByGlob("_content/posts/**/*.md").filter(dateContentFilter)
+        collection.getFilteredByGlob("_content/posts/" + l + "/**/2019/**/*.md")
       // .filter(function(item) {
       //   if (item.data["i18n-key"]) {
       //     let key = item.data["i18n-key"];
@@ -109,13 +102,12 @@ module.exports = function(eleventyConfig) {
       eleventyConfig.addCollection(
         `posts_${l}_${c}`,
         collection =>
-          // addAlternatives(
+          // addPrevNext(
           addPrevNext(
             collection
-              .getFilteredByGlob("_content/posts/**/*.md")
-              .filter(dateContentFilter)
+              .getFilteredByGlob("_content/posts/" + l + "/**/2019/**/*.md")
               .filter(function(item) {
-                return item.data.category == c && item.data.locale == l;
+                return item.data.category == c;
               })
           )
         // )
