@@ -7,6 +7,14 @@ const pluginBetterSlug = require("@borisschapira/eleventy-plugin-better-slug");
 const translations = require("./_content/_data/translations");
 
 module.exports = function(eleventyConfig) {
+  const buildDate = new Date();
+  const contentDate = new Date(buildDate.getTime());
+
+  // TODO Replace with a test to detect ENV
+  if (true) {
+    contentDate.setDate(contentDate.getDate() - 30);
+  }
+
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addPlugin(pluginBetterSlug, {
     extensions: {
@@ -47,22 +55,70 @@ module.exports = function(eleventyConfig) {
     return collectionArray;
   }
 
+  // function addAlternatives(collectionArray, locale) {
+  //   const l = collectionArray.length;
+  //   for (let p = 0; p < collectionArray.length; p++) {
+  //     let post = collectionArray[p];
+  //     let postLocale = post.data.locale;
+
+  //     if(post.data["i18n-key"]){
+  //       post.data.alternatives = alternativesArr[post.data["i18n-key"]].filter(
+  //         item => item != locale
+  //       );
+  //     }
+  //   }
+  //   return collectionArray;
+  // }
+
+  // let alternativesArr = [];
+
+  const dateContentFilter = p => p.date >= contentDate;
+
+  eleventyConfig.addCollection('posts', collection =>
+    collection.getFilteredByGlob("_content/posts/**/*.md").filter(dateContentFilter)
+  );
+
   for (let i = 0; i < arrLocales.length; i++) {
     const l = arrLocales[i];
-    eleventyConfig.addCollection(`posts_${l}`, collection =>
-      collection.getFilteredByTag("posts").filter(function(item) {
-        return item.data.locale == l;
-      })
+    eleventyConfig.addCollection(
+      `posts_${l}`,
+      collection =>
+        collection.getFilteredByGlob("_content/posts/**/*.md").filter(dateContentFilter)
+      // .filter(function(item) {
+      //   if (item.data["i18n-key"]) {
+      //     let key = item.data["i18n-key"];
+      //     if (alternativesArr[key] == undefined) {
+      //       alternativesArr[key] = [];
+      //     }
+      //     alternativesArr[key][l] = {
+      //       title: item.data.title,
+      //       url: item.url
+      //     };
+      //   }
+      //   return item.data.locale == l;
+      // })
     );
+  }
 
+  // console.log(alternativesArr);
+
+  for (let i = 0; i < arrLocales.length; i++) {
+    const l = arrLocales[i];
     for (let j = 0; j < arrCategories.length; j++) {
       const c = arrCategories[j];
-      eleventyConfig.addCollection(`posts_${l}_${c}`, collection =>
-        addPrevNext(
-          collection.getFilteredByTag("posts").filter(function(item) {
-            return item.data.category == c && item.data.locale == l;
-          })
-        )
+      eleventyConfig.addCollection(
+        `posts_${l}_${c}`,
+        collection =>
+          // addAlternatives(
+          addPrevNext(
+            collection
+              .getFilteredByGlob("_content/posts/**/*.md")
+              .filter(dateContentFilter)
+              .filter(function(item) {
+                return item.data.category == c && item.data.locale == l;
+              })
+          )
+        // )
       );
     }
   }
@@ -91,10 +147,10 @@ module.exports = function(eleventyConfig) {
 
   // Get the first `n` elements of a collection.
   eleventyConfig.addFilter("t", (key, locale) => {
-    if (typeof(locale) == "undefined") {
+    if (typeof locale == "undefined") {
       console.log("Error", key, locale);
       // throw new Error("Missing locale in t filter.");
-    } else if (locale != 'fr') {
+    } else if (locale != "fr") {
       return translations[locale][key];
     }
 
@@ -105,8 +161,7 @@ module.exports = function(eleventyConfig) {
    * Shortcodes                   *
    ********************************/
 
-  const buildDate = Date.now();
-  eleventyConfig.addShortcode("version", () => buildDate.toString());
+  eleventyConfig.addShortcode("version", () => buildDate.getTime());
   eleventyConfig.addShortcode("test", () => this);
 
   /********************************
